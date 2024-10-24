@@ -1,18 +1,32 @@
 
-# create a varable A and assign a list of lists to it matrix 10 by 10
-A = [[1, 2, 3, 4, 5,1],]
 
-# loop through the list of lists and check if row > column make it 0
-# for i in range(0,4):
-#     for j in range(0,4):
-#         if i > j:
-#             A[i][j] = 0
+def lu_factorization(A):
 
-for row in range(0, len(A)):
-    for column in range(0, len(A)):
-        if row > column:
-            A[row][column] = 0
+    #check if the matrix is square
+    # for i in range(n):
+    #     if len(A[i]) != n:
+
+    n = len(A)
+    L = [[0 for _ in range(n)] for _ in range(n)]
+
+    for row in range(n):
+        L[row][row] = 1
+        for col in range(row+1, n):
+            L[row][col] = A[row][col] / A[row][row]
+            for i in range(col, n):
+                A[col][i] -= L[row][col] * A[row][i]
+
+    print(L)
+  # loop through the matrix
 
 
-for row in A:
-    print(row)
+
+
+
+A = [
+    [1, 1, 1],
+    [4, 3, -1],
+    [3, 5, 3],
+]
+
+lu_factorization(A)
