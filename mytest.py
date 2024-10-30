@@ -1,32 +1,62 @@
 
 
-def lu_factorization(A):
-
-    #check if the matrix is square
-    # for i in range(n):
-    #     if len(A[i]) != n:
-
+def bob(A):
     n = len(A)
-    L = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        if n !=len(A[i]):
+            return 1
 
-    for row in range(n):
-        L[row][row] = 1
-        for col in range(row+1, n):
-            L[row][col] = A[row][col] / A[row][row]
-            for i in range(col, n):
-                A[col][i] -= L[row][col] * A[row][i]
-
-    print(L)
-  # loop through the matrix
+    for i in range(n):
+        if A[i][i] == 0:
+            return 2
 
 
+    L = [[0.0] * n for i in range(n)]
+    U = [[0.0] * n for i in range(n)]
+
+    # Perform LU decomposition
+    for i in range(n):
+        # Upper triangular matrix U
+        for j in range(i, n):
+            sum_u = 0.0
+            for k in range(i):
+                sum_u += L[i][k] * U[k][j]
+            U[i][j] = A[i][j] - sum_u
+
+        # Lower triangular matrix L
+        for j in range(i, n):
+            if i == j:
+                L[i][i] = 1.0  # Diagonal as 1 in L
+            else:
+                sum_l = 0.0
+                for k in range(i):
+                    sum_l += L[j][k] * U[k][i]
+                L[j][i] = (A[j][i] - sum_l) / U[i][i]
+
+    return L, U,
 
 
 
 A = [
-    [1, 1, 1],
-    [4, 3, -1],
-    [3, 5, 3],
+    [4, 3, 2],
+    [6, 3, 4],
+    [2, 7, 3]
 ]
 
-lu_factorization(A)
+result=bob(A)
+
+
+# Check if the result is valid or if there's an error
+if result == 1:
+    print("Error: The matrix is not square.")
+elif result == 2:
+    print("Error: The matrix has a zero on the diagonal.")
+else:
+    L, U = result
+    print("L matrix:")
+    for row in L:
+        print(row)
+
+    print("\nU matrix:")
+    for row in U:
+        print(row)
